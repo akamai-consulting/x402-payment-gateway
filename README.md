@@ -1,6 +1,6 @@
 # x402 AI-Agent Paywall Demo (Akamai Functions)
 
-_Working end-to-end demo_: Akamai edge detects AI-agent traffic hitting the example publisher site
+Akamai edge detects AI-agent traffic hitting the example publisher site
 `www.publisher.example` → routes it to a Spin app on Akamai Functions
 (`x402-paywall`) → app returns HTTP 402 with x402 payment terms → agent
 signs and pays in test USDC on Base Sepolia → app verifies/settles via
@@ -31,7 +31,7 @@ those settings.
 ## Prerequisites
 
 1. Akamaized Hostname
-2. Bot & Agent Control enabled on hostname. This is not mandatory and you can spoof header to test if you do not have access to Bot & Agent Control product.
+2. Bot & Agent Control enabled on hostname. This is not mandatory and you can also spoof request header to test
 3. Have access to create Akamai Functions
 4. Spin CLI installed
 5. Basic understanding of how x402 works
