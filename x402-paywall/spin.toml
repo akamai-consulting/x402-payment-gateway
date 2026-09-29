@@ -1,0 +1,45 @@
+spin_manifest_version = 2
+
+[application]
+name = "x402-paywall"
+version = "0.1.0"
+authors = ["Deepak Jha"]
+description = "Edge x402 paywall for AI agent traffic - runs on Akamai Functions"
+
+[[trigger.http]]
+route = "/..."
+component = "x402-paywall"
+
+[component.x402-paywall]
+source = "dist/x402-paywall.wasm"
+exclude_files = ["**/node_modules"]
+# The KV store lets us avoid double-charging an agent for the same
+# resource within a short window (see PAID_CACHE_SECONDS in index.js).
+key_value_stores = ["default"]
+# Outbound HTTP allow-list: the facilitator (payment verification/settlement)
+# and the real publisher origin this app proxies to once payment clears.
+allowed_outbound_hosts = [
+  "https://x402.org",
+  "https://api.cdp.coinbase.com",
+  "https://www.publisher.example",
+]
+
+[component.x402-paywall.build]
+command = "npm run build"
+watch = ["src/**/*.js", "package.json"]
+
+[component.x402-paywall.variables]
+facilitator_url = "{{ facilitator_url }}"
+publisher_address = "{{ publisher_address }}"
+origin_url = "{{ origin_url }}"
+price_atomic_usdc = "{{ price_atomic_usdc }}"
+network = "{{ network }}"
+usdc_asset_address = "{{ usdc_asset_address }}"
+
+[variables]
+facilitator_url = { default = "https://x402.org/facilitator" }
+publisher_address = { required = true }
+origin_url = { default = "https://www.publisher.example" }
+price_atomic_usdc = { default = "10000" } # 0.01 USDC (6 decimals)
+network = { default = "base-sepolia" }
+usdc_asset_address = { default = "0x036CbD53842c5426634e7929541eC2318f3dCF7e" }

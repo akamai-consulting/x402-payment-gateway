@@ -1,0 +1,9 @@
+{
+  "name": "x402-demo-wallets",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "viem": "^2.56.7"
+  }
+}
