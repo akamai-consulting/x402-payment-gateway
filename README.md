@@ -1,6 +1,6 @@
 # x402 AI-Agent Paywall Demo (Akamai Functions)
 
-Working end-to-end demo: Akamai edge detects AI-agent traffic hitting the example publisher site
+_Working end-to-end demo_: Akamai edge detects AI-agent traffic hitting the example publisher site
 `www.publisher.example` → routes it to a Spin app on Akamai Functions
 (`x402-paywall`) → app returns HTTP 402 with x402 payment terms → agent
 signs and pays in test USDC on Base Sepolia → app verifies/settles via
@@ -12,7 +12,7 @@ content with a `200 OK`.
 ```
 wallets/            generate + fund the two demo wallets (agent, publisher)
 agent-simulator/    a Node script that plays the role of a paying AI agent
-x402-paywall/       the actual Spin/WebAssembly app deployed to Akamai Functions
+x402-paywall/       the actual Spin/wasm app deployed to Akamai Functions
 ```
 
 `x402-paywall/` is scaffolded directly from Akamai's own `spin new` template
@@ -31,7 +31,7 @@ those settings.
 ## Prerequisites
 
 1. Akamaized Hostname
-2. Botman enabled on hostname
+2. Bot & Agent Control enabled on hostname. This is not mandatory and you can spoof header to test if you do not have access to Bot & Agent Control product.
 3. Have access to create Akamai Functions
 4. Spin CLI installed
 5. Basic understanding of how x402 works
@@ -129,7 +129,7 @@ Do not run the balance checker or simulator with the example placeholders.
    ```
 
 3. **Property Manager** — to route AI-agent traffic on your publisher hostname
-   to the deployed app.
+   to the deployed app. Refer to [PROPERTY_MANAGER_SETUP.md](PROPERTY_MANAGER_SETUP.md) in this repo for step-by-step instructions for setting up the property.
 
 4. **Agent simulator** — plays the AI agent that hits the paywall and pays:
 
@@ -263,8 +263,7 @@ recur:
 ## Before this goes anywhere near production
 
 - Verify the exact x402 request/response schema against the facilitator
-  you actually settle with (Coinbase's hosted one, or your own) - field
-  names have moved between x402 protocol versions.
+  you actually settle with (Coinbase's hosted one, or your own)
 - Add replay protection (a `nonce` + KV check) so a captured X-PAYMENT
   header can't be reused.
 - Decide a real pricing/session model (per-request vs. a prepaid credit
